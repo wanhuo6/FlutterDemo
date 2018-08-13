@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hello_flutter/pages/HomePage.dart';
+import 'package:hello_flutter/pages/MinePage.dart';
 
 void main() => runApp(new MyHomePage());
 
@@ -12,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   final tabTextStyleNormal = new TextStyle(color: const Color(0xff515151));
   final tabTextStyleSelected = new TextStyle(color: const Color(0xff1296db));
-  int tabIndex;
+  int tabIndex=0;
   var tabImages;
   var appBarTitles;
   Image getTabImage(path) {
@@ -25,13 +27,16 @@ class MyHomePageState extends State<MyHomePage> {
     return tabImages[curIndex][0];
   }
   void initData() {
-    tabIndex=0;
-    appBarTitles = ['主页', '我的'];
+    if(appBarTitles==null){
+      appBarTitles = ['主页', '我的'];
+    }
+    if(tabImages==null){
       tabImages =
       [
         [getTabImage('images/ic_home_page_normal.png'), getTabImage('images/ic_home_page_select.png')],
         [getTabImage('images/ic_mine_normal.png'), getTabImage('images/ic_mine_select.png')],
       ];
+    }
   }
     TextStyle getTabTextStyle(int curIndex) {
       if (curIndex == tabIndex) {
@@ -54,6 +59,13 @@ class MyHomePageState extends State<MyHomePage> {
             title: new Text(appBarTitles[tabIndex],
                 style: new TextStyle(color: Colors.white)),
             iconTheme: new IconThemeData(color: Colors.white)
+        ),
+        body: new IndexedStack(
+          children: <Widget>[
+            new HomePage(),
+            new MinePage()
+          ],
+          index: tabIndex,
         ),
         bottomNavigationBar: new CupertinoTabBar(
           items: <BottomNavigationBarItem>[
